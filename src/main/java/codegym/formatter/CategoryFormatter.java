@@ -5,8 +5,8 @@ import codegym.service.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.Formatter;
 
-import java.text.ParseException;
 import java.util.Locale;
+import java.util.Optional;
 
 public class CategoryFormatter implements Formatter<Category> {
     private ICategoryService iCategoryService;
@@ -17,8 +17,9 @@ public class CategoryFormatter implements Formatter<Category> {
     }
 
     @Override
-    public Category parse(String text, Locale locale) throws ParseException {
-        return iCategoryService.findById(Long.parseLong(text));
+    public Category parse(String text, Locale locale) {
+        Optional<Category> categoryOptional = iCategoryService.findById(Long.parseLong(text));
+        return categoryOptional.orElse(null);
     }
 
     @Override

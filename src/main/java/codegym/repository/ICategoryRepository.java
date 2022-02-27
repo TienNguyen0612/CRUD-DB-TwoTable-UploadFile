@@ -10,6 +10,4 @@ import java.util.Optional;
 
 @Repository
 public interface ICategoryRepository extends CrudRepository<Category, Long> {
-    @Query(value = "from Category where name like :name")
-    Optional<Category> findByName(@Param("name") String name);
 }

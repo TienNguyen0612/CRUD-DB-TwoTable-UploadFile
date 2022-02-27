@@ -1,5 +1,6 @@
 package codegym.service.impl;
 
+import codegym.model.Category;
 import codegym.model.Product;
 import codegym.repository.IProductRepository;
 import codegym.service.IProductService;
@@ -44,7 +45,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ArrayList<Product> getAllProductsByCategory(long id) {
-        return (ArrayList<Product>) productRepository.findAllByCategory(id);
+    public Iterable<Product> getAllProductsByCategory(Category category) {
+        return productRepository.findAllByCategory(category);
     }
 }

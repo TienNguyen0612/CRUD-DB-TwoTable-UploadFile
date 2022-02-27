@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/home")
@@ -54,7 +55,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("createProduct")
+    @GetMapping("create-product")
     public ModelAndView createProduct() {
         ModelAndView modelAndView = new ModelAndView("product/create");
         Iterable<Category> categories = categoryService.findAllCategories();
@@ -63,14 +64,14 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/createCategory")
+    @GetMapping("/create-category")
     public ModelAndView createCategory() {
         ModelAndView modelAndView = new ModelAndView("category/create");
         modelAndView.addObject("category", new Category());
         return modelAndView;
     }
 
-    @PostMapping("saveProduct")
+    @PostMapping("save-product")
     public ModelAndView saveProduct(@ModelAttribute Product product) {
         ModelAndView modelAndView = new ModelAndView("product/create");
         MultipartFile multipartFile = product.getImageFile();
@@ -90,7 +91,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("saveCategory")
+    @PostMapping("save-category")
     public ModelAndView saveCategory(@ModelAttribute Category category) {
         ModelAndView modelAndView = new ModelAndView("category/create");
         Category categoryCreate = categoryService.saveCategory(category);
@@ -100,14 +101,14 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/deleteProduct/{id}")
+    @GetMapping("/delete-product/{id}")
     public ModelAndView deleteProduct(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("redirect:/home");
         productService.deleteProduct(id);
         return modelAndView;
     }
 
-    @GetMapping("/deleteCategory/{id}")
+    @GetMapping("/delete-category/{id}")
     public ModelAndView deleteCategory(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("category/list");
         categoryService.deleteCategory(id);
@@ -125,7 +126,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/editProduct/{id}")
+    @GetMapping("/edit-product/{id}")
     public ModelAndView editProduct(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("product/edit");
         Product product = productService.findById(id);
@@ -136,15 +137,15 @@ public class ProductController {
         return modelAndView;
     }
 
-    @GetMapping("/editCategory/{id}")
+    @GetMapping("/edit-category/{id}")
     public ModelAndView editCategory(@PathVariable long id) {
         ModelAndView modelAndView = new ModelAndView("category/edit");
-        Category category = categoryService.findById(id);
+        Optional<Category> category = categoryService.findById(id);
         modelAndView.addObject("category", category);
         return modelAndView;
     }
 
-    @PostMapping("/updateProduct/{id}")
+    @PostMapping("/update-product/{id}")
     public ModelAndView updateProduct(@PathVariable long id, @ModelAttribute Product product) {
         ModelAndView modelAndView = new ModelAndView("/product/edit");
         product.setId(id);
@@ -170,7 +171,7 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("/updateCategory")
+    @PostMapping("/update-category")
     public ModelAndView updateCategory(@ModelAttribute Category category) {
         ModelAndView modelAndView = new ModelAndView("category/edit");
         Category categoryEdit = categoryService.saveCategory(category);
@@ -193,17 +194,17 @@ public class ProductController {
         return modelAndView;
     }
 
-    @PostMapping("/searchByCategory")
-    public ModelAndView searchProductByCategory(@RequestParam("searchByCategory") String category) {
-        ModelAndView modelAndView = new ModelAndView("product/list");
-        long category_id = categoryService.findByName(category).getId();
-        ArrayList<Product> products = productService.getAllProductsByCategory(category_id);
-        if (products.isEmpty()) {
-            modelAndView.addObject("message", "Don't search product have this category !!!");
+    @GetMapping("/view-category/{id}")
+    public ModelAndView viewCategory(@PathVariable long id) {
+        ModelAndView modelAndView = new ModelAndView("category/view");
+        Optional<Category> categoryOptional = categoryService.findById(id);
+        if (!categoryOptional.isPresent()) {
+            return new ModelAndView("error.404");
         }
+        Iterable<Product> products = productService.getAllProductsByCategory(categoryOptional.get());
         modelAndView.addObject("file", view);
         modelAndView.addObject("products", products);
-        modelAndView.addObject("searchByCategory", category);
+//        modelAndView.addObject("category", categoryOptional.get());
         return modelAndView;
     }
 }

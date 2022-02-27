@@ -26,7 +26,7 @@
     <tr class="title">
         <td class="add-file">
             <button type="button" class="btn btn-outline-primary">
-                <a th:href="@{/home/createProduct}">
+                <a th:href="@{/home/create-product}">
                     <i class="fa-solid fa-plus"></i> Add New Product</a>
             </button>
         </td>
@@ -56,24 +56,6 @@
             <button type="button" class="btn btn-outline-primary">
                 <a th:href="@{/home/showCategories}">List Categories</a>
             </button>
-        </td>
-        <td class="search-file">
-            <form class="nav-link d-flex" style="margin: 0" th:action="@{/home/searchByCategory}" method="post">
-                <table>
-                    <tr>
-                        <td>
-                            <label>
-                                <input class="form-control mr-2" type="text" size="20" placeholder="Search By Category" name="searchByCategory" th:value="${searchByCategory}">
-                            </label>
-                        </td>
-                        <td>
-                            <button class="btn btn-light ml-2" type="submit">
-                                <i class="fa-solid fa-magnifying-glass"></i> Search
-                            </button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
         </td>
     </tr>
 </table>
@@ -115,14 +97,14 @@
                         <td>
                             <button type="button" class="btn btn-info">
                                 <a style="color: white; text-decoration: none"
-                                   th:href="@{/home/editProduct/__${product.id}__}"><i
+                                   th:href="@{/home/edit-product/__${product.id}__}"><i
                                         class="fa-solid fa-pencil"></i></a>
                             </button>
                         </td>
                         <td>
                             <button type="button" class="btn btn-danger">
                                 <a style="color: white; text-decoration: none"
-                                   th:href="@{/home/deleteProduct/__${product.id}__}"
+                                   th:href="@{/home/delete-product/__${product.id}__}"
                                    onclick="return confirm('Are you sure you want to Delete?')"><i class="fa-solid fa-trash"></i></a>
                             </button>
                         </td>

@@ -2,6 +2,8 @@ package codegym.service;
 
 import codegym.model.Category;
 
+import java.util.Optional;
+
 public interface ICategoryService {
     Iterable<Category> findAllCategories();
 
@@ -9,7 +11,5 @@ public interface ICategoryService {
 
     void deleteCategory(long id);
 
-    Category findById(long id);
-
-    Category findByName(String name);
+    Optional<Category> findById(long id);
 }

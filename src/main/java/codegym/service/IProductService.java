@@ -1,5 +1,6 @@
 package codegym.service;
 
+import codegym.model.Category;
 import codegym.model.Product;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,5 +18,5 @@ public interface IProductService {
 
     ArrayList<Product> getAllProductsByName(String name);
 
-    ArrayList<Product> getAllProductsByCategory(long id);
+    Iterable<Product> getAllProductsByCategory(Category category);
 }
