@@ -182,12 +182,19 @@ public class ProductController {
     }
 
     @PostMapping("/searchByName")
-    public ModelAndView searchProductByName(@RequestParam("searchByName") String name) {
+    public ModelAndView searchProductByName(@RequestParam("searchByName") String name, @PageableDefault(value = 3) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("product/list");
-        ArrayList<Product> products = productService.getAllProductsByName(name);
-        if (products.isEmpty()) {
-            modelAndView.addObject("message", "Don't search product have this name !!!");
+        Page<Product> products;
+        if (name != null) {
+            products = productService.getAllProductsByName(name, pageable);
+        } else {
+            products = productService.findAllProducts(pageable);
         }
+
+//        ArrayList<Product> products = productService.getAllProductsByName(name);
+//        if (products.isEmpty()) {
+//            modelAndView.addObject("message", "Don't search product have this name !!!");
+//        }
         modelAndView.addObject("file", view);
         modelAndView.addObject("products", products);
         modelAndView.addObject("searchByName", name);
@@ -195,13 +202,13 @@ public class ProductController {
     }
 
     @GetMapping("/view-category/{id}")
-    public ModelAndView viewCategory(@PathVariable long id) {
+    public ModelAndView viewCategory(@PathVariable long id, @PageableDefault(value = 3) Pageable pageable) {
         ModelAndView modelAndView = new ModelAndView("category/view");
         Optional<Category> categoryOptional = categoryService.findById(id);
         if (!categoryOptional.isPresent()) {
             return new ModelAndView("error.404");
         }
-        Iterable<Product> products = productService.getAllProductsByCategory(categoryOptional.get());
+        Page<Product> products = productService.getAllProductsByCategory(categoryOptional.get(), pageable);
         modelAndView.addObject("file", view);
         modelAndView.addObject("products", products);
 //        modelAndView.addObject("category", categoryOptional.get());

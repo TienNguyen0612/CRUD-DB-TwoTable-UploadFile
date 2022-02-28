@@ -13,7 +13,7 @@ public class Category {
     private long id;
     private String name;
 
-    @OneToMany(targetEntity = Product.class)
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
 
     public List<Product> getProducts() {

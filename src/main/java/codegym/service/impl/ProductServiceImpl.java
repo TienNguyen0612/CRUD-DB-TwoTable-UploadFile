@@ -40,12 +40,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ArrayList<Product> getAllProductsByName(String name) {
-        return (ArrayList<Product>) productRepository.findAllByNameContaining(name);
+    public Page<Product> getAllProductsByName(String name, Pageable pageable) {
+        return  productRepository.findAllByNameContaining(name, pageable);
     }
 
     @Override
-    public Iterable<Product> getAllProductsByCategory(Category category) {
-        return productRepository.findAllByCategory(category);
+    public Page<Product> getAllProductsByCategory(Category category, Pageable pageable) {
+        return productRepository.findAllByCategory(category, pageable);
     }
 }

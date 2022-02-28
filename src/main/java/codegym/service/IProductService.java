@@ -16,7 +16,7 @@ public interface IProductService {
 
     Product findById(long id);
 
-    ArrayList<Product> getAllProductsByName(String name);
+    Page<Product> getAllProductsByName(String name, Pageable pageable);
 
-    Iterable<Product> getAllProductsByCategory(Category category);
+    Page<Product> getAllProductsByCategory(Category category, Pageable pageable);
 }
